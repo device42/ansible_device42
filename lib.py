@@ -2,6 +2,10 @@ import requests
 import codecs
 import base64   
 import os
+try:
+    import json
+except ImportError:
+    import simplejson as json
 
 available_groups = ['tag', 'buildings', 'customer', 'service_level']
 
@@ -63,9 +67,18 @@ class REST:
             'Authorization': 'Basic ' + base64.b64encode(self.username + ':' + self.password),
             'Content-Type': 'application/x-www-form-urlencoded'
         }
-
-        r = requests.get(url, headers=headers, verify=False)
-        return r.text
+        offset = 0
+        more_pages = True
+        devices = []
+        while more_pages:
+            r = requests.get(url + "&offset={0}".format(offset), headers=headers, verify=False)
+            response = r.json()
+            devices = devices + response['Devices']
+            if offset + response['limit'] < response['total_count']:
+                offset += response['limit']
+            else:
+                more_pages = False
+        return devices
 
     def get_devices(self):
         url = self.base_url + '/api/1.0/devices/all/?include_cols=name,tags,buildings,customer,service_level&limit=1000'
@@ -88,27 +101,28 @@ class Ansible:
         else:
             return group.lower().replace(' ', '_')
 
-    def get_grouping(self, res):
+    def get_grouping(self, devices):
 
         groups = {}
 
-        for device in res['Devices']:
+        for device in devices:
 
             if self.conf.GROUP_BY == 'tag':
                 for tag in device['tags']:
                     group_name = tag
-                    groups.setdefault(group_name, []).append(device['name'])
+                    groups.setdefault(group_name, {}).setdefault('hosts', []).append(device['name'])
                 if len(device['tags']) == 0 and self.conf.EMPTY_TO_NONE is True:
-                    groups.setdefault('None', []).append(device['name'])
+                    groups.setdefault('None', {}).setdefault('hosts', []).append(device['name'])
             else:
                 group_name = str(device[self.conf.GROUP_BY])
                 group_name = self.check_group(group_name)
                 if group_name is False:
                     continue
-                groups.setdefault(group_name, []).append(device['name'])
+                groups.setdefault(group_name, {}).setdefault('hosts', []).append(device['name'])
                 if device['name'] not in groups[group_name]:
                     groups[group_name].append(device['name'])
 
+        groups.setdefault('_meta', {'hostvars': {}})
         return groups
 
     @staticmethod
