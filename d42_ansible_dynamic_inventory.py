@@ -33,14 +33,16 @@ class Inventory(object):
     # Example inventory for testing.
     def inventory(self):
         rest = REST(conf)
-        rest_res = json.loads(rest.get_devices())
+        returned_devices = rest.get_devices()
 
         if conf.GROUP_BY not in available_groups:
             print '\n[!] ERROR: wrong grouping name'
             sys.exit()
 
         ansible = Ansible(conf)
-        return ansible.get_grouping(rest_res)
+        groups = ansible.get_grouping(returned_devices)
+        groups['_meta'] = {'hostvars': {}}
+        return groups
 
     # Empty inventory for testing.
     def empty_inventory(self):

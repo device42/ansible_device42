@@ -13,7 +13,7 @@ except: pass
 if __name__ == '__main__':
     logger = Logger(conf)
     rest = REST(conf, logger)
-    rest_res = json.loads(rest.get_devices())
+    rest_res = rest.get_devices()
 
     if conf.GROUP_BY not in available_groups:
         print '\n[!] ERROR: wrong grouping name'
