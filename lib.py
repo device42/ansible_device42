@@ -112,7 +112,7 @@ class Ansible:
                     group_name = tag
                     groups.setdefault(group_name, {}).setdefault('hosts', []).append(device['name'])
                 if len(device['tags']) == 0 and self.conf.EMPTY_TO_NONE is True:
-                    groups.setdefault('None', []).append(device['name'])
+                    groups.setdefault('None', {}).setdefault('hosts', []).append(device['name'])
             else:
                 group_name = str(device[self.conf.GROUP_BY])
                 group_name = self.check_group(group_name)
@@ -131,7 +131,7 @@ class Ansible:
 
         for group in groups:
             f.write('[' + group + ']\n')
-            for device in groups[group]:
+            for device in groups[group]['hosts']:
                 f.write(device.encode('ascii', 'replace') + '\n')
             f.write('\n')
 
