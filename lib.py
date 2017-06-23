@@ -110,7 +110,7 @@ class Ansible:
             if self.conf.GROUP_BY == 'tag':
                 for tag in device['tags']:
                     group_name = tag
-                    groups.setdefault(group_name, {}).setdefault('hosts', []).append(device['name'])
+                    groups.setdefault(group_name, []).append(device['name'])
                 if len(device['tags']) == 0 and self.conf.EMPTY_TO_NONE is True:
                     groups.setdefault('None', []).append(device['name'])
             else:
