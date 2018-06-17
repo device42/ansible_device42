@@ -1,12 +1,12 @@
 [Device42](http://www.device42.com/) is a Continuous Discovery software for your IT Infrastructure. It helps you automatically maintain an up-to-date inventory of your physical, virtual, and cloud servers and containers, network components, software/services/applications, and their inter-relationships and inter-dependencies.
 
-This repository has 2 different scripts that you can use with ansible. 
+This repository has 2 different scripts that you can use with ansible.
 1. `d42_ansible_inventory_hostfile.py` can be used to create a static inventory file for ansible. You can group hosts by tags, customers, building or service level from Device42 data.
-2. `d42_ansible_dynamic_inventory.py` can be used to dynamically by ansible to get hosts from Device42 based on certain filters. 
+2. `d42_ansible_dynamic_inventory.py` can be used to dynamically by ansible to get hosts from Device42 based on certain filters.
 
 ## Assumptions
 -----------------------------
-    * This script works with Device42 10.5.0.1473709546 and above
+    * This script works with Device42 12.0.0 and above
 
 ### Requirements
 -----------------------------
@@ -25,21 +25,13 @@ D42_PWD = 'device42 password'
 D42_URL = 'https:// device42 server IP address'
 ```
 
-    * in conf add Ansible group settings
+    * in conf add DOQL group settings
 ```
 # ====== Ansible settings ========= #
-GROUP_BY = 'buildings' # tag, buildings, customer, service_level
-EMPTY_TO_NONE = False # move empty groups to group 'None' otherwise not save
+GROUP_BY_QUERY = 'select name, service_level from view_device_v1' # DOQL QUERY, POSSIBLE TO GROUP BY ANY FIELD
+GROUP_BY_FIELD = 'service_level' # GROUP BY FIELD
+GROUP_BY_REFERENCE_FIELD = 'name' # FIELD THAT COMES AS REFERENCE NAME
 ```
-	* in conf adjust log settings
-```
-# ====== Log settings ==================== #
-LOGFILE = 'migration.log'
-STDOUT = False  # print to STDOUT
-DEBUG = True  # write debug log
-DEBUG_LOG = 'debug.log'
-```
-
 
 Run the `python d42_ansible_inventory_hostfile.py`  and enjoy!
 

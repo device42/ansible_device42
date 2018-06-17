@@ -1,12 +1,8 @@
-# ====== Log settings ==================== #
-LOGFILE = 'migration.log'
-STDOUT = False  # print to STDOUT
-DEBUG = True  # write debug log
-DEBUG_LOG = 'debug.log'
 # ====== Device42 upload settings ========= #
-D42_USER = 'device42 user'
-D42_PWD = 'device42 password'
-D42_URL = 'https:// device42 server IP address'
-# ====== Ansible settings ========= #
-GROUP_BY = 'tag' # tag, buildings, customer, service_level
-EMPTY_TO_NONE = True # move empty groups to group 'None' otherwise not save
+D42_USER = 'admin'
+D42_PWD = 'adm!nd42'
+D42_URL = 'https://10.10.10.10'
+# ====== DOQL settings ========= #
+GROUP_BY_QUERY = 'select name, service_level from view_device_v1'
+GROUP_BY_FIELD = 'service_level'
+GROUP_BY_REFERENCE_FIELD = 'name'
