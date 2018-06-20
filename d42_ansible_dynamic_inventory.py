@@ -1,17 +1,13 @@
 #!/usr/bin/env python
 
 import argparse
-import imp
 import sys
 from lib import *
-
-conf = imp.load_source('conf', 'conf')
 
 try:
     import json
 except ImportError:
     import simplejson as json
-
 
 class Inventory(object):
 
@@ -31,6 +27,7 @@ class Inventory(object):
         print json.dumps(self.inventory)
 
     def inventory(self):
+        conf = get_conf()
         ansible = Ansible(conf)
         groups = ansible.get_grouping(Device42(conf).doql())
         groups['_meta'] = {'hostvars': {}}

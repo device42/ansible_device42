@@ -17,12 +17,13 @@ This repository has 2 different scripts that you can use with ansible.
 -----------------------------
 
     * rename conf.sample to conf
-    * in conf add D42 URL/credentials
+    * in conf add D42 URL/credentials ( also instead of conf file, possible to use environment variables )
 ```
 # ====== Device42 upload settings ========= #
 D42_USER = 'device42 user'
 D42_PWD = 'device42 password'
 D42_URL = 'https:// device42 server IP address'
+D42_SKIP_SSL_CHECK = True
 ```
 
     * in conf add DOQL group settings
