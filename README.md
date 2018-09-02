@@ -32,6 +32,7 @@ D42_SKIP_SSL_CHECK = True
 GROUP_BY_QUERY = 'select name, service_level from view_device_v1' # DOQL QUERY, POSSIBLE TO GROUP BY ANY FIELD
 GROUP_BY_FIELD = 'service_level' # GROUP BY FIELD
 GROUP_BY_REFERENCE_FIELD = 'name' # FIELD THAT COMES AS REFERENCE NAME
+SPLIT_GROUP_BY_COMMA = False
 ```
 
 Run the `python d42_ansible_inventory_hostfile.py`  and enjoy!
