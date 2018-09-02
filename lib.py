@@ -99,9 +99,15 @@ class Ansible:
         groups = {}
         for object_ in objects:
             try:
-                if object_[self.conf['GROUP_BY_FIELD']] not in groups:
-                    groups[object_[self.conf['GROUP_BY_FIELD']]] = []
-                groups[object_[self.conf['GROUP_BY_FIELD']]].append(object_[self.conf['GROUP_BY_REFERENCE_FIELD']])
+                if self.conf['SPLIT_GROUP_BY_COMMA']:
+                    for group in object_[self.conf['GROUP_BY_FIELD']].split(','):
+                        if group not in groups:
+                            groups[group] = []
+                        groups[group].append(object_[self.conf['GROUP_BY_REFERENCE_FIELD']])
+                else:
+                    if object_[self.conf['GROUP_BY_FIELD']] not in groups:
+                        groups[object_[self.conf['GROUP_BY_FIELD']]] = []
+                    groups[object_[self.conf['GROUP_BY_FIELD']]].append(object_[self.conf['GROUP_BY_REFERENCE_FIELD']])
             except Exception as e:
                 print object_
                 sys.exit()

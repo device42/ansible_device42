@@ -6,3 +6,4 @@ D42_URL = 'https://10.10.10.10'
 GROUP_BY_QUERY = 'select name, service_level from view_device_v1'
 GROUP_BY_FIELD = 'service_level'
 GROUP_BY_REFERENCE_FIELD = 'name'
+SPLIT_GROUP_BY_COMMA = False
