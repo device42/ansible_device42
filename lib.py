@@ -14,7 +14,7 @@ except ImportError:
 def get_conf():
     try:
         conf = imp.load_source('conf', 'conf').__dict__
-        if conf['D42_SKIP_SSL_CHECK'] == True:
+        if 'D42_SKIP_SSL_CHECK' in conf and conf['D42_SKIP_SSL_CHECK'] == True:
             requests.packages.urllib3.disable_warnings(requests.packages.urllib3.exceptions.InsecureRequestWarning)
     except:
         if 'D42_SKIP_SSL_CHECK' in os.environ and os.environ['D42_SKIP_SSL_CHECK'] == 'True':
