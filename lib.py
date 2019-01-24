@@ -81,7 +81,7 @@ class Device42:
 
     @staticmethod
     def get_list_from_csv(text):
-        f = StringIO(text.decode("utf-8"))
+        f = StringIO(text.encode("utf-8", "replace"))
         list_ = []
         dict_reader = csv.DictReader(f, quotechar='"', delimiter=',', quoting=csv.QUOTE_ALL, skipinitialspace=True, dialect='excel')
         for item in dict_reader:
@@ -121,7 +121,7 @@ class Ansible:
         for group in groups:
             f.write('[' + group + ']\n')
             for device in groups[group]:
-                f.write(device.encode('ascii', 'replace') + '\n')
+                f.write(device + '\n')
             f.write('\n')
 
         f.close()
