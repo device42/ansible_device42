@@ -50,7 +50,8 @@ def get_conf():
             'D42_PWD': os.environ['D42_PWD'],
             'GROUP_BY_QUERY': os.environ['GROUP_BY_QUERY'],
             'GROUP_BY_FIELD': os.environ['GROUP_BY_FIELD'],
-            'GROUP_BY_REFERENCE_FIELD': os.environ['GROUP_BY_REFERENCE_FIELD']
+            'GROUP_BY_REFERENCE_FIELD': os.environ['GROUP_BY_REFERENCE_FIELD'],
+            'SPLIT_GROUP_BY_COMMA': os.environ['SPLIT_GROUP_BY_COMMA']
         }
     return conf
 
