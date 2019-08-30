@@ -3,3 +3,4 @@ confc
 debug.log
 migration.log
 hosts
+*.pyc
