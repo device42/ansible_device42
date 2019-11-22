@@ -13,10 +13,19 @@ class Inventory(object):
 
     def __init__(self):
         parser = argparse.ArgumentParser()
+        parser.add_argument('--list', action='store_true')
+        parser.add_argument('--host')
         self.args = parser.parse_args()
 
-        self.inventory = self.inventory()
-        print json.dumps(self.inventory)
+        # Called with `--list`.
+        if self.args.list:
+            self.inventory = self.inventory()
+        # Called with `--host [hostname]`.
+        # If no groups or vars are present, return an empty inventory.
+        else:
+            self.inventory = self.empty_inventory()
+
+        print(json.dumps(self.inventory))
 
     def inventory(self):
         conf = get_conf()
