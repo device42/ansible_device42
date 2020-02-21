@@ -1,0 +1,9 @@
+---
+plugin: device42.d42.d42
+url: 'https://d42-4165.device42.net'
+username: admin
+password: xunwIj-2pivpo-syhzun
+keyed_groups:
+    - key: d42_service_level
+      prefix: ''
+      separator: ''

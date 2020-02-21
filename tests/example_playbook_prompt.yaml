@@ -1,0 +1,26 @@
+- hosts:                  all
+  vars_prompt:
+    - name:               "d42url"
+      prompt:             "Enter D42URL"
+      private:            no
+    - name:               "d42username"
+      prompt:             "Enter D42 Auth Username"
+      private:            no
+    - name:               "d42password"
+      prompt:             "Enter D42 Auth Passwowrd"
+      private:            yes  
+  vars:
+    ansible_user:         "login"
+    ansible_host:         "{{ lookup('device42.d42.d42_prompt', '{{d42url}}', '{{d42username}}', '{{d42password}}', 'SELECT ip_address FROM view_ipaddress_v1 WHERE device_fk = ( SELECT device_pk FROM view_device_v1 WHERE name = @{{inventory_hostname}}@ )', 'doql', 'string') }}"
+    ansible_ssh_pass:     "{{ lookup('device42.d42.d42_prompt', '{{d42url}}', '{{d42username}}', '{{d42password}}', '{{inventory_hostname}}', 'password', '{{ansible_user}}') }}"
+    netports:
+      port:               "{{ item.port }}"
+      port_speed:         "{{ item.port_speed }}"
+      hwaddress:          "{{ item.hwaddress }}"
+      primary_vlan_name:  "{{ item.primary_vlan_name }}"
+      port_type:          "{{ item.port_type }}"
+      remote_port:        "{{ item.remote_port }}"
+      remote_device_name: "{{ item.remote_device_name }}"
+  tasks:
+    - shell:              echo "{{netports.port}}"
+      with_items:         "{{ lookup('device42.d42.d42_prompt', '{{d42url}}', '{{d42username}}', '{{d42password}}', 'SELECT n.port, n.hwaddress, n.port_type, n.port_speed, r.port as remote_port, v.name as primary_vlan_name, d.name as remote_device_name FROM view_netport_v1 n LEFT JOIN view_netport_v1 r ON n.remote_netport_fk = r.netport_pk LEFT JOIN view_vlan_v1 v ON n.primary_vlan_fk = v.vlan_pk LEFT JOIN view_device_v1 d ON r.device_fk = d.device_pk WHERE n.device_fk = (SELECT device_pk FROM view_device_v1 WHERE name = @{{inventory_hostname}}@ )', 'doql', 'list_dicts') }}"
