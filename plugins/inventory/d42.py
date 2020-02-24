@@ -61,6 +61,16 @@ import requests
 class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
     NAME = 'device42.d42.d42'
 
+    def verify_file(self, path):
+         valid = False
+         if super(InventoryModule, self).verify_file(path):
+             if path.endswith(('d42.yaml', 'd42.yml')):
+                 valid = True
+             else:
+                 self.display.vvv('Skipping due to inventory source not ending in "d42.yaml" nor "d42.yml"')
+         return valid
+
+
     def parse(self, inventory, loader, path, cache=False): 
         super(InventoryModule, self).parse(inventory, loader, path)
 
