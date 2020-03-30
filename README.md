@@ -1,8 +1,8 @@
 [Device42](http://www.device42.com/) is a Continuous Discovery software for your IT Infrastructure. It helps you automatically maintain an up-to-date inventory of your physical, virtual, and cloud servers and containers, network components, software/services/applications, and their inter-relationships and inter-dependencies.
 
 This Ansible Collection contains the inventory and lookup plugins for Device42. 
-1. Inventory (device42.d42.d42) - can be used to dynamically generate Ansible inventory from Device42 devices.
-2. Lookup (device42.d42.d42)- This lookup plugin allows a playbook to fetch passwords or ip addresses for hosts from Device42.
+1. Inventory (device42.d42) - can be used to dynamically generate Ansible inventory from Device42 devices.
+2. Lookup (device42.d42)- This lookup plugin allows a playbook to fetch passwords or ip addresses for hosts from Device42.
 3. Lookup (device42.d42.d42_prompt) - This lookup plugin allows a playbook to fetch passwords or ip addresses for hosts from Device42 with prompt. 
 
 In the `contrib` directory you will find the legacy inventory scripts. Please favor the plugin over the legacy scripts:
@@ -49,7 +49,7 @@ Define an inventory file (`*.d42.yml`). View documentation using `ansible-doc -t
 
 Example:
 ```
-plugin: device42.d42.d42
+plugin: device42.d42
 instance: https://10.10.10.10
 username: admin
 password: adm!nd42
