@@ -45,7 +45,7 @@ For more information on installing collections please follow documentation here 
 ## Inventory Plugin
 
 ### Configuration
-Define an inventory file (`*.d42.yml`). View documentation using `ansible-doc -t inventory device42.d42.d42`
+Define an inventory file (`*.d42.yml`). View documentation using `ansible-doc -t inventory device42.d42`
 
 Example:
 ```
