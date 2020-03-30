@@ -1,10 +1,12 @@
 from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 DOCUMENTATION = r'''
-    name: device42.d42.d42
+    name: device42.d42
     plugin_type: inventory
     author:
       - Will Tome (@willtome)
+      - Anatolii (@achmykhalo)
+      - Omar Sanchez(@Osanchez42)
     short_description: Device42 Inventory Plugin
     version_added: "2.10"
     description:
@@ -44,7 +46,7 @@ DOCUMENTATION = r'''
 '''
 
 EXAMPLES = r'''
-plugin: device42.d42.d42
+plugin: device42.d42
 instance: https://10.10.10.10
 username: admin
 password: adm!nd42
@@ -59,7 +61,7 @@ import requests
 
 
 class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
-    NAME = 'device42.d42.d42'
+    NAME = 'device42.d42'
 
     def verify_file(self, path):
          valid = False
