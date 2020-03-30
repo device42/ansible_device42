@@ -14,7 +14,7 @@ In the `contrib` directory you will find the legacy inventory scripts. Please fa
 - This script works with Device42 12.0.0 and above
 ### Requirements
 - ansible 2.9+
-- python 2.7.x
+- python 3.6.x+
 - requests (you can install it with pip install requests or apt-get install python-requests)
 
 ### Installation
