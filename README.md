@@ -18,7 +18,28 @@ In the `contrib` directory you will find the legacy inventory scripts. Please fa
 - requests (you can install it with pip install requests or apt-get install python-requests)
 
 ### Installation
-Please follow documentation for installing collections here https://docs.ansible.com/ansible/latest/user_guide/collections_using.html
+#### Ansible Tower:
+* Clone the repo on the host of your anisble server
+```bash
+git clone git@github.com:device42/ansible_device42.git
+```
+* Navigate to the cloned directory
+```bash
+cd path/to/directory
+```
+* Build the Ansible collection
+```bash
+ansible-galaxy collection build
+```
+* Install the ansible collection 
+```bash
+ansible-galaxy collection install device42-d42-2.0.0.tar.gz -p ../.ansible/collections
+```
+
+___Change ../.ansible/collections to the directory of your Ansible collections folder___
+
+#### Other: 
+For more information on installing collections please follow documentation here https://docs.ansible.com/ansible/latest/user_guide/collections_using.html
 
 -----------------------------
 ## Inventory Plugin
