@@ -7,7 +7,7 @@ authors:
     - "Anatolii (@achmykhalo)"
     - "Omar Sanchez (@Osanchez42)"
 license:
-    - "MIT"
+    - "Apache"
 tags:
     - device42
     - integration
