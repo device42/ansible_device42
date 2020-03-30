@@ -1,0 +1,15 @@
+namespace: "device42"
+name: "d42"
+version: "2.0.0"
+readme: "README.md"
+authors:
+    - "Will Tome (@willtome)"
+    - "Anatolii (@achmykhalo)"
+    - "Omar Sanchez (@Osanchez42)"
+license:
+    - "MIT"
+tags:
+    - device42
+    - integration
+    - collection
+repository: "https://github.com/device42/ansible_device42"
