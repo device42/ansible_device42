@@ -1,7 +1,7 @@
 from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 DOCUMENTATION = r'''
-    name: device42.d42
+    name: device42.d42.d42
     plugin_type: inventory
     author:
       - Will Tome (@willtome)
@@ -15,9 +15,9 @@ DOCUMENTATION = r'''
         - constructed
     options:
         plugin:
-            description: The name of the Device42 Inventory Plugin, this should always be 'device42.d42'.
+            description: The name of the Device42 Inventory Plugin, this should always be 'device42.d42.d42'.
             required: True
-            choices: ['device42.d42']
+            choices: ['device42.d42.d42']
         url:
             description: URI of Device42. The URI should be the fully-qualified domain name, e.g. 'your-instance.device42.net'.
             type: string
@@ -46,7 +46,7 @@ DOCUMENTATION = r'''
 '''
 
 EXAMPLES = r'''
-plugin: device42.d42
+plugin: device42.d42.d42
 instance: https://10.10.10.10
 username: admin
 password: adm!nd42
@@ -61,7 +61,7 @@ import requests
 
 
 class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
-    NAME = 'device42.d42'
+    NAME = 'device42.d42.d42'
 
     def verify_file(self, path):
          valid = False
