@@ -9,8 +9,8 @@ if __name__ == '__main__':
     groups = ansible.get_grouping(Device42(conf).doql())
 
     if ansible.write_inventory_file(groups) is True:
-        print '[!] Done!'
+        print ('[!] Done!')
     else:
-        print '[!] Can\'t write to file'
+        print ('[!] Can\'t write to file')
 
     sys.exit()

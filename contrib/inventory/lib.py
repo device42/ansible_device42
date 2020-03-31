@@ -21,27 +21,27 @@ def get_conf():
             requests.packages.urllib3.disable_warnings(requests.packages.urllib3.exceptions.InsecureRequestWarning)
 
         if 'D42_URL' not in os.environ:
-            print 'Please set D42_URL environ.'
+            print ('Please set D42_URL environ.')
             sys.exit()
 
         if 'D42_USER' not in os.environ:
-            print 'Please set D42_USER environ.'
+            print ('Please set D42_USER environ.')
             sys.exit()
 
         if 'D42_PWD' not in os.environ:
-            print 'Please set D42_PWD environ.'
+            print ('Please set D42_PWD environ.')
             sys.exit()
 
         if 'GROUP_BY_QUERY' not in os.environ:
-            print 'Please set GROUP_BY_QUERY environ.'
+            print ('Please set GROUP_BY_QUERY environ.')
             sys.exit()
 
         if 'GROUP_BY_FIELD' not in os.environ:
-            print 'Please set GROUP_BY_FIELD environ.'
+            print ('Please set GROUP_BY_FIELD environ.')
             sys.exit()
 
         if 'GROUP_BY_REFERENCE_FIELD' not in os.environ:
-            print 'Please set GROUP_BY_REFERENCE_FIELD environ.'
+            print ('Please set GROUP_BY_REFERENCE_FIELD environ.')
             sys.exit()
 
         conf = {
@@ -110,7 +110,7 @@ class Ansible:
                         groups[object_[self.conf['GROUP_BY_FIELD']]] = []
                     groups[object_[self.conf['GROUP_BY_FIELD']]].append(object_[self.conf['GROUP_BY_REFERENCE_FIELD']])
             except Exception as e:
-                print object_
+                print (object_)
                 sys.exit()
         return groups
 

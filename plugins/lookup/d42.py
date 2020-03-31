@@ -6,15 +6,15 @@ if 'D42_SKIP_SSL_CHECK' in os.environ and os.environ['D42_SKIP_SSL_CHECK'] == 'T
     requests.packages.urllib3.disable_warnings(requests.packages.urllib3.exceptions.InsecureRequestWarning)
 
 if 'D42_URL' not in os.environ:
-    print 'Please set D42_URL environ.'
+    print ('Please set D42_URL environ.')
     sys.exit()
 
 if 'D42_USER' not in os.environ:
-    print 'Please set D42_USER environ.'
+    print ('Please set D42_USER environ.')
     sys.exit()
 
 if 'D42_PWD' not in os.environ:
-    print 'Please set D42_PWD environ.'
+    print ('Please set D42_PWD environ.')
     sys.exit()
 
 try:
