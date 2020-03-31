@@ -16,10 +16,11 @@ In the `contrib` directory you will find the legacy inventory scripts. Please fa
 - ansible 2.9+
 - python 3.6.x+
 - requests (you can install it with pip install requests or apt-get install python-requests)
+- Ansible must have an available connection to your Device42 instance in order to collect devices for inventory
 
 ### Installation
 #### Ansible Tower:
-* Clone the repo on the host of your anisble server
+* Clone the repo on the host of your Anisble server
 ```bash
 git clone git@github.com:device42/ansible_device42.git
 ```
@@ -31,41 +32,12 @@ cd path/to/directory
 ```bash
 ansible-galaxy collection build
 ```
-* Install the ansible collection 
+* Install the Ansible collection 
 ```bash
 ansible-galaxy collection install device42-d42-2.0.0.tar.gz -p ../.ansible/collections
 ```
 
-___Change ../.ansible/collections to the directory of your Ansible collections folder___
-
-#### Other: 
-For more information on installing collections please follow documentation here https://docs.ansible.com/ansible/latest/user_guide/collections_using.html
-
------------------------------
-## Inventory Plugin
-
-### Configuration
-Define an inventory file (`*.d42.yml`). View documentation using `ansible-doc -t inventory device42.d42.d42`
-
-Example:
-```
-plugin: device42.d42.d42
-instance: https://10.10.10.10
-username: admin
-password: adm!nd42
-keyed_groups:
-    - key: d42_service_level
-      prefix: ''
-      separator: ''
-```
-See https://docs.ansible.com/ansible/latest/plugins/inventory/constructed.html for more constructed examples.
-
------------------------------
-## Lookup Plugin
-
-### Configuration
-
-Please set system environment variables if you use ENV version ( d42.py ):
+* Set the following environmental variables (optional)
 ```
 D42_USER = 'device42 user'
 D42_PWD = 'device42 password'
@@ -73,8 +45,68 @@ D42_URL = 'https:// device42 server IP address'
 D42_SKIP_SSL_CHECK = False
 ```
 
+* Enable Inventory Plugins
+By default inventory plugins shipped with Ansible are disabled by default and will need to be whitelisted. it is necessary 
+to enable the use of plugins in order to run this script. Please navigate to your *ansible.cfg* file and enable plugins
+by uncommenting the following line and adding the device42 plugin to the list
+```bash
+[inventory]
+# enable inventory plugins, default: 'host_list', 'script', 'auto', 'yaml', 'ini', 'toml'
+enable_plugins = host_list, virtualbox, yaml, constructed, device42.d42.d42 <- remove '#' from this line
 ```
-* Place d42.py or d42_prompt.py in ansible/lib/ansible/plugins/lookup/
+For more information on installing collections please follow documentation here https://docs.ansible.com/ansible/latest/user_guide/collections_using.html
+
+-----------------------------
+## Inventory Plugin
+
+### Configuration
+Define an inventory file (`*.d42.yml`) within .ansible/collections/ansible_collections/device42/d42/plugins/inventory or wherever your
+Ansible collections directory is located.
+
+View documentation using `ansible-doc -t inventory device42.d42.d42`
+
+Environmental variables not defined:
+```
+plugin: device42.d42.d42
+url: https://10.10.10.10
+username: admin
+password: password
+ssl_check: False
+keyed_groups:
+    - key: d42_service_level
+      prefix: ''
+      separator: ''
+```
+
+Environmental variables defined:
+```
+plugin: device42.d42.d42
+keyed_groups:
+    - key: d42_service_level
+      prefix: ''
+      separator: ''
+```
+See [Ansible documentation](https://docs.ansible.com/ansible/latest/plugins/inventory/constructed.html) for more constructed examples.
+
+### How to run
+from the directory of your newly created file run the following command.
+
+```bash
+ansible-inventory -i *.d42.yml --graph
+```
+
+-----------------------------
+## Lookup Plugin
+
+### Configuration
+
+If using environmental variables skip this step, if not create a d42.py or d42_prompt.py in ansible/lib/ansible/plugins/lookup/
+with the following information
+```
+D42_USER = 'device42 user'
+D42_PWD = 'device42 password'
+D42_URL = 'https:// device42 server IP address'
+D42_SKIP_SSL_CHECK = False
 ```
 
 ### Usage

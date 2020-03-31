@@ -51,9 +51,10 @@ DOCUMENTATION = r'''
 
 EXAMPLES = r'''
 plugin: device42.d42.d42
-instance: https://10.10.10.10
+url: https://10.10.10.10
 username: admin
-password: adm!nd42
+password: password
+ssl_check: False
 keyed_groups:
     - key: d42_service_level
       prefix: ''
@@ -88,23 +89,34 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         ssl_check = self.get_option('ssl_check')
         strict = self.get_option('strict')
 
-        response = requests.get(base_url + "/api/1.0/devices/all", auth=(username, password), verify=ssl_check)
-        objects = response.json()['Devices']
-        for object_ in objects:
-            host_name = self.inventory.add_host(to_safe_group_name(object_['name']))
-            for k in object_.keys():
-                self.inventory.set_variable(host_name, 'd42_' + k, object_[k])
+        try:
+            objects = []
 
-            if object_['ip_addresses'] != []:
-                self.inventory.set_variable(host_name, 'ansible_host', object_['ip_addresses'][0]['ip'])
+            response = requests.get(base_url + "/api/1.0/devices/all", auth=(username, password), verify=ssl_check, timeout=10)
 
-            self._set_composite_vars(
-                self.get_option('compose'),
-                self.inventory.get_host(host_name).get_vars(), host_name,
-                strict)
+            print('response code: ' + str(response.status_code))
+            json_response = response.json()
 
-            self._add_host_to_composed_groups(self.get_option('groups'), dict(), host_name, strict)
-            self._add_host_to_keyed_groups(self.get_option('keyed_groups'), dict(), host_name, strict)
+            if 'Devices' in json_response:
+                objects = json_response['Devices']
+
+            for object_ in objects:
+                host_name = self.inventory.add_host(to_safe_group_name(object_['name']))
+                for k in object_.keys():
+                    self.inventory.set_variable(host_name, 'd42_' + k, object_[k])
+
+                if object_['ip_addresses'] != []:
+                    self.inventory.set_variable(host_name, 'ansible_host', object_['ip_addresses'][0]['ip'])
+
+                self._set_composite_vars(
+                    self.get_option('compose'),
+                    self.inventory.get_host(host_name).get_vars(), host_name,
+                    strict)
+
+                self._add_host_to_composed_groups(self.get_option('groups'), dict(), host_name, strict)
+                self._add_host_to_keyed_groups(self.get_option('keyed_groups'), dict(), host_name, strict)
+        except Exception as e:
+            print(e)
 
 
 
