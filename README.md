@@ -45,15 +45,6 @@ D42_URL = 'https:// device42 server IP address'
 D42_SKIP_SSL_CHECK = False
 ```
 
-* Enable Inventory Plugins
-By default inventory plugins shipped with Ansible are disabled by default and will need to be whitelisted. it is necessary 
-to enable the use of plugins in order to run this script. Please navigate to your *ansible.cfg* file and enable plugins
-by uncommenting the following line and adding the device42 plugin to the list
-```bash
-[inventory]
-# enable inventory plugins, default: 'host_list', 'script', 'auto', 'yaml', 'ini', 'toml'
-enable_plugins = host_list, virtualbox, yaml, constructed, device42.d42.d42 <- remove '#' from this line
-```
 For more information on installing collections please follow documentation here https://docs.ansible.com/ansible/latest/user_guide/collections_using.html
 
 -----------------------------
