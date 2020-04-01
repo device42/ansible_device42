@@ -109,8 +109,7 @@ D42_URL = 'https:// device42 server IP address'
 D42_SKIP_SSL_CHECK = False
 ```
 
-### Usage
-
+### How to run
 ```
 To get password call: lookup('d42', 'device_name', 'password', 'username')
 ```
@@ -125,6 +124,12 @@ doql query need to be filled in + we need to set data type of returned result ( 
 
 All above works the same for the `prompt` version, we just add 3 more arguments in the yaml file, please check reference in promt example.
 
+The following was tested in a playbook using the included example template `example_playbook.yaml`
+playbooks can be run by using the following command
+
+```bash
+ansible-playbook *.yaml -f 10
+```
 ## Legacy Inventory Usage
 -----------------------------
 

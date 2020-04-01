@@ -1,6 +1,6 @@
 from ansible.errors import AnsibleError
 from ansible.plugins.lookup import LookupBase
-import json, requests, imp, sys, csv, StringIO, os
+import json, requests, imp, sys, csv, io, os
 
 if 'D42_SKIP_SSL_CHECK' in os.environ and os.environ['D42_SKIP_SSL_CHECK'] == 'True':
     requests.packages.urllib3.disable_warnings(requests.packages.urllib3.exceptions.InsecureRequestWarning)
@@ -16,7 +16,7 @@ class LookupModule(LookupBase):
 
     @staticmethod
     def get_list_from_csv(text):
-        f = StringIO.StringIO(text.decode("utf-8"))
+        f = io.StringIO(text)
         output_list = []
         dict_reader = csv.DictReader(f, quotechar='"', delimiter=',', quoting=csv.QUOTE_ALL, skipinitialspace=True, dialect='excel')
         for item in dict_reader:

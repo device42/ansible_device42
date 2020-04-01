@@ -7,7 +7,7 @@
       prompt:             "Enter D42 Auth Username"
       private:            no
     - name:               "d42password"
-      prompt:             "Enter D42 Auth Passwowrd"
+      prompt:             "Enter D42 Auth Password"
       private:            yes  
   vars:
     ansible_user:         "login"
