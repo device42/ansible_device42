@@ -2,21 +2,43 @@ from io import StringIO
 import requests
 import codecs
 import base64
-import imp
+import configparser
 import csv
 import sys
 import os
+
+
 try:
     import json
 except ImportError:
     import simplejson as json
 
+
 def get_conf():
+
     try:
-        conf = imp.load_source('conf', 'conf').__dict__
-        if 'D42_SKIP_SSL_CHECK' in conf and conf['D42_SKIP_SSL_CHECK'] == True:
+        conf_file = configparser.ConfigParser()
+        conf_file.read('conf.ini')
+    except Exception:
+        print('Failed to read config file, have you changed the config file name to conf.ini?')
+        sys.exit(1)
+
+    try:
+        if conf_file.get('DEFAULT', 'D42_SKIP_SSL_CHECK') == 'True':
             requests.packages.urllib3.disable_warnings(requests.packages.urllib3.exceptions.InsecureRequestWarning)
-    except:
+
+        conf = {
+            'D42_URL': conf_file.get('DEFAULT', 'D42_URL'),
+            'D42_USER': conf_file.get('DEFAULT', 'D42_USER'),
+            'D42_PWD': conf_file.get('DEFAULT', 'D42_PWD'),
+            'GROUP_BY_QUERY': conf_file.get('DOQL', 'GROUP_BY_QUERY'),
+            'GROUP_BY_FIELD': conf_file.get('DOQL', 'GROUP_BY_FIELD'),
+            'GROUP_BY_REFERENCE_FIELD': conf_file.get('DOQL', 'GROUP_BY_REFERENCE_FIELD'),
+            'SPLIT_GROUP_BY_COMMA': conf_file.get('DOQL', 'SPLIT_GROUP_BY_COMMA')
+        }
+
+    except Exception as e:
+        print(e)
         if 'D42_SKIP_SSL_CHECK' in os.environ and os.environ['D42_SKIP_SSL_CHECK'] == 'True':
             requests.packages.urllib3.disable_warnings(requests.packages.urllib3.exceptions.InsecureRequestWarning)
 
@@ -110,7 +132,7 @@ class Ansible:
                         groups[object_[self.conf['GROUP_BY_FIELD']]] = []
                     groups[object_[self.conf['GROUP_BY_FIELD']]].append(object_[self.conf['GROUP_BY_REFERENCE_FIELD']])
             except Exception as e:
-                print (object_)
+                print(object_)
                 sys.exit()
         return groups
 
@@ -128,3 +150,6 @@ class Ansible:
         f.close()
 
         return True
+
+if __name__ == "__main__":
+    print(get_conf())

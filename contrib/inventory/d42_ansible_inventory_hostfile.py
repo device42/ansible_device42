@@ -3,6 +3,8 @@ import json
 import requests
 from lib import *
 
+from contrib.inventory.lib import get_conf
+
 if __name__ == '__main__':
     conf = get_conf()
     ansible = Ansible(conf)

@@ -1,6 +1,6 @@
 from ansible.errors import AnsibleError
 from ansible.plugins.lookup import LookupBase
-import json, requests, imp, sys, csv, io, os
+import json, requests, sys, csv, io, os
 
 if 'D42_SKIP_SSL_CHECK' in os.environ and os.environ['D42_SKIP_SSL_CHECK'] == 'True':
     requests.packages.urllib3.disable_warnings(requests.packages.urllib3.exceptions.InsecureRequestWarning)

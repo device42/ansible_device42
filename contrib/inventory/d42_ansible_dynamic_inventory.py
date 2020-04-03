@@ -4,6 +4,8 @@ import argparse
 import sys
 from lib import *
 
+from contrib.inventory.lib import get_conf
+
 try:
     import json
 except ImportError:

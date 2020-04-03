@@ -19,8 +19,9 @@ In the `contrib` directory you will find the legacy inventory scripts. Please fa
 - Ansible must have an available connection to your Device42 instance in order to collect devices for inventory
 
 ### Installation
+
 #### Ansible Tower:
-* Clone the repo on the host of your Anisble server
+* Clone the repo on the host of your Ansible server
 ```bash
 git clone git@github.com:device42/ansible_device42.git
 ```
@@ -51,8 +52,7 @@ For more information on installing collections please follow documentation here 
 ## Inventory Plugin
 
 ### Configuration
-Define an inventory file (`*.d42.yml`) within .ansible/collections/ansible_collections/device42/d42/plugins/inventory or wherever your
-Ansible collections directory is located.
+Define an inventory file (`*.d42.yml`) 
 
 View documentation using `ansible-doc -t inventory device42.d42.d42`
 
@@ -124,22 +124,21 @@ ansible-playbook *.yaml -f 10
 ## Legacy Inventory Usage
 -----------------------------
 
-    * rename conf.sample to conf
+    * rename conf.sample.ini to conf.ini
     * in conf add D42 URL/credentials ( also instead of conf file, possible to use environment variables )
 ```
-# ====== Device42 upload settings ========= #
-D42_USER = 'device42 user'
-D42_PWD = 'device42 password'
-D42_URL = 'https:// device42 server IP address'
+# ====== Device42 upload settings =========
+[DEFAULT]
+D42_USER = admin
+D42_PWD = adm!nd42
+D42_URL = https://10.10.10.10
 D42_SKIP_SSL_CHECK = True
-```
 
-    * in conf add DOQL group settings
-```
-# ====== Ansible settings ========= #
-GROUP_BY_QUERY = 'select name, service_level from view_device_v1' # DOQL QUERY, POSSIBLE TO GROUP BY ANY FIELD
-GROUP_BY_FIELD = 'service_level' # GROUP BY FIELD
-GROUP_BY_REFERENCE_FIELD = 'name' # FIELD THAT COMES AS REFERENCE NAME
+# ====== Ansible settings =========
+[DOQL]
+GROUP_BY_QUERY = select name, service_level from view_device_v1
+GROUP_BY_FIELD = service_level
+GROUP_BY_REFERENCE_FIELD = name
 SPLIT_GROUP_BY_COMMA = False
 ```
 
