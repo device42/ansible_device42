@@ -59,7 +59,7 @@ touch requirements.yml
 collections:
 - name: device42.d42
 version: 1.0.0
-source: https://galaxy.ansible.com
+source: https://galaxy.ansible.com/device42/d42
 ```
 
 * Install the Ansible collection by running command
