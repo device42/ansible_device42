@@ -18,25 +18,57 @@ In the `contrib` directory you will find the legacy inventory scripts. Please fa
 - requests (you can install it with pip install requests or apt-get install python-requests)
 - Ansible must have an available connection to your Device42 instance in order to collect devices for inventory
 
-### Installation
+### Installation Methods
+
+#### Galaxy 
+```bash
+ansible-galaxy collection install device42.d42
+```
+
+#### Automation Hub
+To consume content from hub as part of your automation workflows the content can also be accessed via CLI. 
+For this an offline token is required which can be obtained via the web UI at [automation hub](https://cloud.redhat.com/ansible/automation-hub/token), 
+and needs to be added to the configuration file as follows:
+
+```bash
+[galaxy]
+server_list = automation_hub, galaxy
+
+[galaxy_server.automation_hub]
+url=https://cloud.redhat.com/api/automation-hub/
+auth_url=https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token
+token=AABBccddeeff112233gghh...
+
+[galaxy_server.galaxy]
+url=https://galaxy.ansible.com/
+```
+
+Once configured the collection can be installed by running the following command
+```bash
+$ ansible-galaxy collection install device42.d42
+```
 
 #### Ansible Tower:
-* Clone the repo on the host of your Ansible server
+* Create a collections requirement file in the SCM 
 ```bash
-git clone git@github.com:device42/ansible_device42.git
+touch requirements.yml
 ```
-* Navigate to the cloned directory
+
+* add the following to your file and save it
 ```bash
-cd path/to/directory
+collections:
+- name: device42.d42
+version: 1.0.0
+source: https://galaxy.ansible.com
 ```
-* Build the Ansible collection
+
+* Install the Ansible collection by running command
 ```bash
-ansible-galaxy collection build
+ansible-galaxy collection install -r requirements.yml -p <job tmp location>
 ```
-* Install the Ansible collection 
-```bash
-ansible-galaxy collection install device42-d42-2.0.0.tar.gz -p ../.ansible/collections
-```
+Starting with Ansible Tower 3.6, the project folder will be copied for each job run. This allows playbooks to make 
+local changes to the source tree for convenience, such as creating temporary files, 
+without the possibility of interference with other jobs.
 
 * Set the following environmental variables (optional)
 ```
