@@ -1,7 +1,8 @@
 - hosts:                  localhost
   vars:
+    device_name:          "test"
     ansible_user:         "admin"
-    ansible_host:         "{{ lookup('device42.d42.d42', 'SELECT * FROM view_device_v1 WHERE name='localhost'', 'doql', 'string') }}"
+    ansible_host:         "{{ lookup('device42.d42.d42', 'SELECT * FROM view_device_v1 WHERE name={{device_name}}', 'doql', 'string') }}"
     ansible_ssh_pass:     "{{ lookup('device42.d42.d42', '{{inventory_hostname}}', 'password', '{{ansible_user}}') }}"
     device_details:
       name:               "{{ ansible_host.name }}"
