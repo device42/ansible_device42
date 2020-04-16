@@ -1,0 +1,17 @@
+- hosts:                  localhost
+  vars:
+    device_name:          "test"
+    ansible_user:         "admin"
+    ansible_host:         "{{ lookup('device42.d42.d42', 'SELECT * FROM view_device_v1 WHERE name={{device_name}}', 'doql', 'string') }}"
+    ansible_ssh_pass:     "{{ lookup('device42.d42.d42', '{{inventory_hostname}}', 'password', '{{ansible_user}}') }}"
+    device_details:
+      name:               "{{ ansible_host.name }}"
+      type:               "{{ ansible_host.type_id }}"
+      service_level:      "{{ ansible_host.service_level }}"
+      serial_no:          "{{ ansible_host.serial_no }}"
+      cpupower:           "{{ ansible_host.cpupower }}"
+      ram:                "{{ ansible_host.ram }}"
+      notes:              "{{ ansible_host.notes }}"
+  tasks:
+    - shell:              echo "{{item}}"
+      with_items:         "{{ lookup('device42.d42.d42', 'SELECT * FROM view_device_v1', 'doql', 'list_dicts') }}"
