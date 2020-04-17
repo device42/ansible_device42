@@ -117,6 +117,3 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 self._add_host_to_keyed_groups(self.get_option('keyed_groups'), dict(), host_name, strict)
         except Exception as e:
             print(e)
-
-
-
