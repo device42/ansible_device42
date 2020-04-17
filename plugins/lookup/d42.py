@@ -1,3 +1,4 @@
+from __future__ import (absolute_import, division, print_function)
 from ansible.errors import AnsibleError
 from ansible.plugins.lookup import LookupBase
 import json

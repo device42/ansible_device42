@@ -1,6 +1,6 @@
 from __future__ import (absolute_import, division, print_function)
 import sys
-from contrib.inventory.lib import get_conf
+from contrib.inventory.lib import get_conf, Ansible, Device42
 
 __metaclass__ = type
 
