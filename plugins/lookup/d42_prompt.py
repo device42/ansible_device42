@@ -34,8 +34,8 @@ class LookupModule(LookupBase):
 
     def run(self, terms, variables=None, **kwargs):
         conf = {
-            'D42_URL': terms[0], 
-            'D42_USER': terms[1], 
+            'D42_URL': terms[0],
+            'D42_USER': terms[1],
             'D42_PWD': terms[2],
         }
         if terms[4] == "password":
