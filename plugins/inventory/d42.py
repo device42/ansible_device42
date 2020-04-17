@@ -1,7 +1,6 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
-
-from __future__ import absolute_import, division, print_function
+from __future__ import (absolute_import, division, print_function)
+from ansible.plugins.inventory import BaseInventoryPlugin, Constructable, Cacheable, to_safe_group_name
+import requests
 
 __metaclass__ = type
 
@@ -61,22 +60,20 @@ keyed_groups:
       separator: ''
 '''
 
-from ansible.plugins.inventory import BaseInventoryPlugin, Constructable, Cacheable, to_safe_group_name
-import requests
-
 
 class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
     NAME = 'device42.d42.d42'
 
     def verify_file(self, path):
-         valid = False
-         if super(InventoryModule, self).verify_file(path):
-             if path.endswith(('d42.yaml', 'd42.yml')):
-                 valid = True
-             else:
-                 self.display.vvv('Skipping due to inventory source not ending in "d42.yaml" nor "d42.yml"')
-         return valid
+        valid = False
 
+        if super(InventoryModule, self).verify_file(path):
+            if path.endswith(('d42.yaml', 'd42.yml')):
+                valid = True
+            else:
+                self.display.vvv('Skipping due to inventory source not ending in "d42.yaml" nor "d42.yml"')
+
+        return valid
 
     def parse(self, inventory, loader, path, cache=False): 
         super(InventoryModule, self).parse(inventory, loader, path)
@@ -92,7 +89,8 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         try:
             objects = []
 
-            response = requests.get(base_url + "/api/1.0/devices/all", auth=(username, password), verify=ssl_check, timeout=10)
+            response = requests.get(base_url + "/api/1.0/devices/all", auth=(username, password), verify=ssl_check,
+                                    timeout=10)
 
             print('response code: ' + str(response.status_code))
             json_response = response.json()
@@ -105,7 +103,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 for k in object_.keys():
                     self.inventory.set_variable(host_name, 'd42_' + k, object_[k])
 
-                if object_['ip_addresses'] != []:
+                if object_['ip_addresses']:
                     self.inventory.set_variable(host_name, 'ansible_host', object_['ip_addresses'][0]['ip'])
 
                 self._set_composite_vars(

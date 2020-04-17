@@ -1,9 +1,8 @@
+from __future__ import (absolute_import, division, print_function)
 import sys
-import json
-import requests
-from lib import *
-
 from contrib.inventory.lib import get_conf
+
+__metaclass__ = type
 
 if __name__ == '__main__':
     conf = get_conf()

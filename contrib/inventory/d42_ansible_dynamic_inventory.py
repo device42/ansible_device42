@@ -1,15 +1,14 @@
-#!/usr/bin/env python
-
+from __future__ import (absolute_import, division, print_function)
 import argparse
-import sys
-from lib import *
-
 from contrib.inventory.lib import get_conf
 
 try:
     import json
 except ImportError:
     import simplejson as json
+
+__metaclass__ = type
+
 
 class Inventory(object):
 
@@ -38,5 +37,6 @@ class Inventory(object):
 
     def empty_inventory(self):
         return {'_meta': {'hostvars': {}}}
+
 
 Inventory()

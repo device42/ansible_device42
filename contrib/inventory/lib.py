@@ -1,17 +1,18 @@
+from __future__ import (absolute_import, division, print_function)
 from io import StringIO
 import requests
-import codecs
 import base64
 import configparser
 import csv
 import sys
 import os
 
-
 try:
     import json
 except ImportError:
     import simplejson as json
+
+__metaclass__ = type
 
 
 def get_conf():
@@ -76,6 +77,7 @@ def get_conf():
             'SPLIT_GROUP_BY_COMMA': os.environ['SPLIT_GROUP_BY_COMMA']
         }
     return conf
+
 
 class Device42:
 
@@ -150,6 +152,7 @@ class Ansible:
         f.close()
 
         return True
+
 
 if __name__ == "__main__":
     print(get_conf())
