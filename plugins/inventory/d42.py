@@ -5,7 +5,6 @@ import requests
 import io
 import csv
 import json
-import sys
 
 __metaclass__ = type
 
@@ -617,9 +616,4 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         """
 
         return self.get_doql_csv(device_entitlements_query)
-
-
-if __name__ == "__main__":
-
-
 
