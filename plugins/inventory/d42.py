@@ -89,7 +89,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         try:
             objects = []
 
-            json_response = self.get_devices()
+            json_response = self.get_d42_inventory()
 
             if 'Devices' in json_response:
                 objects = json_response['Devices']
