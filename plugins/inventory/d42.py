@@ -1,10 +1,6 @@
-# from __future__ import (absolute_import, division, print_function)
-
-# from ansible.plugins.inventory import BaseInventoryPlugin, Constructable, Cacheable, to_safe_group_name
+from __future__ import (absolute_import, division, print_function)
+from ansible.plugins.inventory import BaseInventoryPlugin, Constructable, Cacheable, to_safe_group_name
 import requests
-import io
-import csv
-import json
 
 __metaclass__ = type
 
@@ -50,6 +46,12 @@ DOCUMENTATION = r'''
             default: true
             env:
                 - name: D42_SSL_CHECK
+        debug:
+            description: Debug option.
+            type: boolean
+            default: false
+            env:
+                - name: D42_DEBUG
 '''
 
 EXAMPLES = r'''
@@ -58,6 +60,7 @@ url: https://10.10.10.10
 username: admin
 password: password
 ssl_check: False
+debug: False
 keyed_groups:
     - key: d42_service_level
       prefix: ''
@@ -118,18 +121,16 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         password = self.get_option('password')
         ssl_check = self.get_option('ssl_check')
 
-        data = {'header': 'yes', 'query': query}
+        data = {'output_type': 'json', 'header': 'yes', 'query': query}
         unformatted_d42_inventory = []
 
         try:
-            response = requests.get(base_url + "/services/data/v1.0/query/", params=data,
+            response = requests.post(base_url + "/services/data/v1.0/query/", params=data,
                                     auth=(username, password), verify=ssl_check)
 
             # csv response to json object
-            doql_csv = response.text
-            reader = csv.DictReader(io.StringIO(doql_csv))
-            unformatted_d42_inventory = json.dumps(list(reader))
-            unformatted_d42_inventory = json.loads(unformatted_d42_inventory)
+            unformatted_d42_inventory = response.json()
+
         except Exception as e:
             print(e)
             return []
@@ -137,6 +138,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         return unformatted_d42_inventory
 
     def get_d42_inventory(self):
+
         # the final inventory that will be returned
         inventory = {
             'total_count': None,
@@ -356,6 +358,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
 
     def get_devices(self):
+
         device_query = """
             select
             view_device_v1.*,
