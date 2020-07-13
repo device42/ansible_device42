@@ -1,6 +1,5 @@
-# from __future__ import (absolute_import, division, print_function)
-
-# from ansible.plugins.inventory import BaseInventoryPlugin, Constructable, Cacheable, to_safe_group_name
+from __future__ import (absolute_import, division, print_function)
+from ansible.plugins.inventory import BaseInventoryPlugin, Constructable, Cacheable, to_safe_group_name
 import requests
 import io
 import csv
@@ -122,14 +121,15 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         unformatted_d42_inventory = []
 
         try:
-            response = requests.get(base_url + "/services/data/v1.0/query/", params=data,
+            response = requests.post(base_url + "/services/data/v1.0/query/", params=data,
                                     auth=(username, password), verify=ssl_check)
 
             # csv response to json object
-            doql_csv = response.text
-            reader = csv.DictReader(io.StringIO(doql_csv))
-            unformatted_d42_inventory = json.dumps(list(reader))
-            unformatted_d42_inventory = json.loads(unformatted_d42_inventory)
+            # doql_csv = response.text
+            unformatted_d42_inventory = response.json()
+            # reader = csv.DictReader(io.StringIO(doql_csv))
+            #unformatted_d42_inventory = json.dumps(list(reader))
+            #unformatted_d42_inventory = json.loads(unformatted_d42_inventory)
         except Exception as e:
             print(e)
             return []
