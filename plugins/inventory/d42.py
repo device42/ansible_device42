@@ -120,24 +120,33 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         username = self.get_option('username')
         password = self.get_option('password')
         ssl_check = self.get_option('ssl_check')
+        debug = self.get_option('debug')
 
         data = {'output_type': 'json', 'header': 'yes', 'query': query}
         unformatted_d42_inventory = []
 
         try:
+            # while there should be no timeout, ansible seems to get stuck sending requests without timeouts
             response = requests.post(base_url + "/services/data/v1.0/query/", params=data,
-                                    auth=(username, password), verify=ssl_check)
+                                    auth=(username, password), verify=ssl_check, timeout=30)
+
+            if debug:
+                status_code = response.status_code
+                print('Response Status: ' + status_code)
 
             # csv response to json object
             unformatted_d42_inventory = response.json()
 
         except Exception as e:
-            print(e)
+            if debug:
+                print(e)
             return []
 
         return unformatted_d42_inventory
 
     def get_d42_inventory(self):
+
+        debug = self.get_option('debug')
 
         # the final inventory that will be returned
         inventory = {
@@ -149,18 +158,29 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         d42_inventory = {}
 
         # get all the items from device42 that will be used to build the json object
+        if debug:
+            print('Getting Devices')
         d42_devices = self.get_devices()
+        if debug:
+            print('Getting IPs')
         d42_device_ips = self.get_ip_addresses()
+        if debug:
+            print('Getting MAC Addresses')
         d42_device_mac_addresses = self.get_mac_addresses()
+        if debug:
+            print('Getting HDD Details')
         d42_device_hdd_details = self.get_hdd_details()
+        if debug:
+            print('Getting Device External Links')
         d42_device_external_links = self.get_external_links()
+        if debug:
+            print('Getting Device Entitlements')
         d42_device_entitlements = self.get_device_entitlements()
+        if debug:
+            print('Getting Custom Fields')
         d42_device_custom_fields = self.get_custom_fields()
 
         for device in d42_devices:
-
-            if device['device_pk'] in d42_inventory:
-                print('device already encountered, ensure that the doql for devices is working correctly')
 
             device_record = {}
 
