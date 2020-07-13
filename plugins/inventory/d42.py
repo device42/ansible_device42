@@ -584,7 +584,15 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             mac_address.port,
             vlan.name as vlan
             from view_device_v1
-            inner join (select device_fk, (hwaddress :: macaddr::character varying) as hw_address, name as port_name, port, primary_vlan_fk from view_netport_v1) mac_address
+            inner join (select device_fk, (
+                CASE
+                    WHEN length(TRIM(hwaddress)) = 12
+                        THEN CONCAT_WS(':',left(TRIM(view_netport_v1.hwaddress),2), substring(TRIM(view_netport_v1.hwaddress),3,2), substring(TRIM(view_netport_v1.hwaddress),5,2), substring(TRIM(view_netport_v1.hwaddress),7,2), substring(TRIM(view_netport_v1.hwaddress),9,2), right(TRIM(view_netport_v1.hwaddress),2))
+                        ELSE
+                            hwaddress
+                        END
+                )
+                as hw_address, name as port_name, port, primary_vlan_fk from view_netport_v1) mac_address
             ON view_device_v1.device_pk = mac_address.device_fk
             full join (select vlan_pk, name from view_vlan_v1) vlan
             ON vlan.vlan_pk = mac_address.primary_vlan_fk
