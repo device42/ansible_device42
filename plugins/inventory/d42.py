@@ -127,7 +127,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
         try:
             # while there should be no timeout, ansible seems to get stuck sending requests without timeouts
-            response = requests.get(base_url + "/services/data/v1.0/query/", params=data,
+            response = requests.post(base_url + "/services/data/v1.0/query/", data=data,
                                     auth=(username, password), verify=ssl_check, timeout=30)
 
             if debug:
