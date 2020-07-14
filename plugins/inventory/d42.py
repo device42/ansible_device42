@@ -115,14 +115,14 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         except Exception as e:
             print(e)
 
-    def get_doql_csv(self, query):
+    def get_doql_json(self, query):
         base_url = self.get_option('url')
         username = self.get_option('username')
         password = self.get_option('password')
         ssl_check = self.get_option('ssl_check')
         debug = self.get_option('debug')
 
-        data = {'output_type': 'json', 'header': 'yes', 'query': query}
+        data = {'output_type': 'json', 'query': query}
         unformatted_d42_inventory = []
 
         try:
@@ -134,7 +134,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 status_code = response.status_code
                 print('Response Status: ' + str(status_code))
 
-            # csv response to json object
+            # json response to json object
             unformatted_d42_inventory = response.json()
 
         except Exception as e:
@@ -189,7 +189,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             device_record['ip_addresses'] = []
             device_record['serial_no'] = device.get('serial_no')
             device_record['hw_depth'] = device.get('hw_depth')
-            device_record['nonauthoritativealiases'] = str(device.get('nonauthoritativealiases')).split(',')
+            device_record['nonauthoritativealiases'] = str(device.get('nonauthoritativealiases')).split(',') if device.get('nonauthoritativealiases') is not None else []
 
             device_record['service_level'] = device.get('service_level')
             device_record['is_it_blade_host'] = 'no' if device.get('blade_chassis') == 'false' else 'yes'
@@ -201,7 +201,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             # custom field
             device_record['custom_fields'] = []
 
-            device_record['aliases'] = str(device.get('aliases')).split(',')
+            device_record['aliases'] = str(device.get('aliases')).split(',') if device.get('aliases') is not None else []
             device_record['category'] = device.get('category')
 
             # hdd details
@@ -278,7 +278,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                         "description": hdd_detail_record.get('hdd_description'),
                         "partno": hdd_detail_record.get('partno'),
                         "rpm": {
-                            "id": hdd_detail_record.get('hdd_rom_id'),
+                            "id": hdd_detail_record.get('hdd_rpm_id'),
                             "name": hdd_detail_record.get('hdd_rpm')
                         },
                         "notes": hdd_detail_record.get('hdd_notes'),
@@ -360,8 +360,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                         "subnet": device_ip_record.get('subnet')
                     }
                 )
-            else:
-                print(device_id + ' Not found in d42_inventory')
 
         # now that the dictionary has been constructed, remove device id keys and keep value
         # add additional imformation like total_count
@@ -479,7 +477,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
              ) AS p ON view_device_v1.device_pk = p.device_fk
         """
 
-        return self.get_doql_csv(device_query)
+        return self.get_doql_json(device_query)
 
 
     def get_custom_fields(self):
@@ -506,7 +504,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 on view_device_v1.device_pk = custom_field.device_fk
             """
 
-        return self.get_doql_csv(custom_field_query)
+        return self.get_doql_json(custom_field_query)
 
 
     def get_external_links(self):
@@ -520,7 +518,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 inner join (select device_fk, device_url, notes as device_url_notes from view_deviceurl_v1) external_links
                 on view_device_v1.device_pk=external_links.device_fk
             """
-        return self.get_doql_csv(external_links_query)
+        return self.get_doql_json(external_links_query)
 
 
     def get_hdd_details(self):
@@ -534,7 +532,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         hdd.hdd_description,
         hdd.partno,
         hdd.rpm as hdd_rpm,
-        hdd.rpm_id as hdd_rom_id,
+        hdd.rpm_id as hdd_rpm_id,
         hdd.notes as hdd_notes,
         hdd.hdd_bytes,
         hdd.location as hdd_location,
@@ -553,7 +551,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         on hdd_details.partmodel_id = hdd.hdd_id
         """
 
-        return self.get_doql_csv(hdd_details_query)
+        return self.get_doql_json(hdd_details_query)
 
 
     def get_ip_addresses(self):
@@ -572,7 +570,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             inner join (select subnet_pk, name from view_subnet_v1) subnet
             on ip_address.subnet_fk = subnet.subnet_pk
         """
-        return self.get_doql_csv(ip_address_query)
+        return self.get_doql_json(ip_address_query)
 
     def get_mac_addresses(self):
         mac_addresses_query = """
@@ -598,7 +596,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             ON vlan.vlan_pk = mac_address.primary_vlan_fk
         """
 
-        return self.get_doql_csv(mac_addresses_query)
+        return self.get_doql_json(mac_addresses_query)
 
 
     def get_device_entitlements(self):
@@ -646,5 +644,5 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             on purchase.purchase_pk = line_items.purchase_fk
         """
 
-        return self.get_doql_csv(device_entitlements_query)
+        return self.get_doql_json(device_entitlements_query)
 
