@@ -95,6 +95,7 @@ url: https://10.10.10.10
 username: admin
 password: password
 ssl_check: False
+debug: False
 keyed_groups:
     - key: d42_service_level
       prefix: ''
@@ -130,6 +131,7 @@ D42_USER = 'device42 user'
 D42_PWD = 'device42 password'
 D42_URL = 'https:// device42 server IP address'
 D42_SKIP_SSL_CHECK = False
+D42_DEBUG = False
 ```
 
 ### How to run
@@ -165,6 +167,7 @@ D42_USER = admin
 D42_PWD = adm!nd42
 D42_URL = https://10.10.10.10
 D42_SKIP_SSL_CHECK = True
+D42_DEBUG = FALSE
 
 # ====== Ansible settings =========
 [DOQL]
