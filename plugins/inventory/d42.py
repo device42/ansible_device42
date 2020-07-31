@@ -137,6 +137,8 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 unformatted_d42_inventory = {}
             else:
                 # csv response to json object
+                if debug:
+                    print('Response Status: ' + str(status_code))
                 unformatted_d42_inventory = response.json()
 
         except Exception as e:
