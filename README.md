@@ -10,8 +10,6 @@ In the `contrib` directory you will find the legacy inventory scripts. Please fa
 2. `contrib\inventory\d42_ansible_dynamic_inventory.py` can be used to dynamically by ansible to get hosts from Device42 based on certain filters.
 
 -----------------------------
-## Assumptions
-- This script works with Device42 12.0.0 and above
 ### Requirements
 - ansible 2.9+
 - python 3.6.x+
