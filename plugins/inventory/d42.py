@@ -131,10 +131,9 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
             status_code = response.status_code
 
-            if debug:
-                print('Response Status: ' + str(status_code))
-
             if status_code == 500:
+                print('an error was encountered on query API call to Device42')
+                print('Response Status: ' + str(status_code))
                 unformatted_d42_inventory = {}
             else:
                 # csv response to json object
