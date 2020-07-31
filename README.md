@@ -15,6 +15,7 @@ In the `contrib` directory you will find the legacy inventory scripts. Please fa
 ### Requirements
 - ansible 2.9+
 - python 3.6.x+
+- Device42 16.12.00+
 - requests (you can install it with pip install requests or apt-get install python-requests)
 - Ansible must have an available connection to your Device42 instance in order to collect devices for inventory
 
