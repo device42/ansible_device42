@@ -123,24 +123,27 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         debug = self.get_option('debug')
 
         data = {'output_type': 'json', 'query': query}
-        unformatted_d42_inventory = []
 
         try:
             # while there should be no timeout, ansible seems to get stuck sending requests without timeouts
             response = requests.post(base_url + "/services/data/v1.0/query/", data=data,
                                     auth=(username, password), verify=ssl_check, timeout=30)
 
+            status_code = response.status_code
+
             if debug:
-                status_code = response.status_code
                 print('Response Status: ' + str(status_code))
 
-            # json response to json object
-            unformatted_d42_inventory = response.json()
+            if status_code == 500:
+                unformatted_d42_inventory = {}
+            else:
+                # csv response to json object
+                unformatted_d42_inventory = response.json()
 
         except Exception as e:
             if debug:
                 print(e)
-            return []
+            return {}
 
         return unformatted_d42_inventory
 
