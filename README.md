@@ -58,7 +58,7 @@ touch requirements.yml
 ```bash
 collections:
     - name: device42.d42
-      version: 1.0.0
+      version: 1.1.0
       source: https://galaxy.ansible.com
 ```
 
