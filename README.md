@@ -57,8 +57,8 @@ touch requirements.yml
 ```bash
 collections:
 - name: device42.d42
-version: 1.0.0
-source: https://galaxy.ansible.com/device42/d42
+version: 1.1.1
+source: https://galaxy.ansible.com/
 ```
 
 * Install the Ansible collection by running command
@@ -157,6 +157,13 @@ ansible-playbook *.yaml -f 10
 ## Legacy Inventory Usage
 -----------------------------
 
+### Requirements
+- ansible 2.9+
+- python 3.6.x+ or python 2.7.x
+- Device42 16.12.00+
+- requests (you can install it with pip install requests or apt-get install python-requests)
+- Ansible must have an available connection to your Device42 instance in order to collect devices for inventory
+
     * rename conf.sample.ini to conf.ini
     * in conf add D42 URL/credentials ( also instead of conf file, possible to use environment variables )
 ```
@@ -176,7 +183,9 @@ GROUP_BY_REFERENCE_FIELD = name
 SPLIT_GROUP_BY_COMMA = False
 ```
 
-Run the `python d42_ansible_inventory_hostfile.py`  and enjoy!
+Navigate to the root folder of the script `.../ansible_device42`
+
+Run the `python -m contrib.inventory.d42_ansible_inventory_hostfile` and enjoy!
 
 Also you may use automatic version with Ansible commands ex.
 
