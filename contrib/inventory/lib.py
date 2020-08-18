@@ -1,11 +1,14 @@
 from __future__ import (absolute_import, division, print_function)
-from io import StringIO
 import requests
-import base64
 import configparser
 import csv
 import sys
 import os
+from requests.auth import HTTPBasicAuth
+try:
+    from StringIO import StringIO ## for Python 2
+except ImportError:
+    from io import StringIO ## for Python 3
 
 try:
     import json
@@ -18,8 +21,11 @@ __metaclass__ = type
 def get_conf():
 
     try:
+        current_dir = os.getcwd()
+        config_file_path = os.path.join(current_dir, 'contrib/inventory/conf.ini')
+
         conf_file = configparser.ConfigParser()
-        conf_file.read('conf.ini')
+        conf_file.read(config_file_path)
     except Exception:
         print('Failed to read config file, have you changed the config file name to conf.ini?')
         sys.exit(1)
@@ -90,14 +96,13 @@ class Device42:
 
     def fetcher(self, url, query):
         headers = {
-            'Authorization': 'Basic ' + base64.b64encode(self.username + ':' + self.password),
             'Content-Type': 'application/x-www-form-urlencoded'
         }
 
         r = requests.post(url, data={
             'query': query,
             'header': 'yes'
-        }, headers=headers, verify=False)
+        }, headers=headers, verify=False, auth=HTTPBasicAuth(self.username, self.password))
         return r.text
 
     def doql(self):
@@ -106,7 +111,7 @@ class Device42:
 
     @staticmethod
     def get_list_from_csv(text):
-        f = StringIO(text.encode("utf-8", "replace"))
+        f = StringIO(text)
         list_ = []
         dict_reader = csv.DictReader(f, quotechar='"', delimiter=',', quoting=csv.QUOTE_ALL, skipinitialspace=True, dialect='excel')
         for item in dict_reader:
