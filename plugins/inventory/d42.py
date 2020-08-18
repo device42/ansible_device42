@@ -123,24 +123,28 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         debug = self.get_option('debug')
 
         data = {'output_type': 'json', 'query': query}
-        unformatted_d42_inventory = []
 
         try:
             # while there should be no timeout, ansible seems to get stuck sending requests without timeouts
             response = requests.post(base_url + "/services/data/v1.0/query/", data=data,
                                     auth=(username, password), verify=ssl_check, timeout=30)
 
-            if debug:
-                status_code = response.status_code
-                print('Response Status: ' + str(status_code))
+            status_code = response.status_code
 
-            # json response to json object
-            unformatted_d42_inventory = response.json()
+            if status_code == 500:
+                print('an error was encountered on query API call to Device42')
+                print('Response Status: ' + str(status_code))
+                unformatted_d42_inventory = {}
+            else:
+                # csv response to json object
+                if debug:
+                    print('Response Status: ' + str(status_code))
+                unformatted_d42_inventory = response.json()
 
         except Exception as e:
             if debug:
                 print(e)
-            return []
+            return {}
 
         return unformatted_d42_inventory
 
@@ -260,7 +264,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             if device_id in d42_inventory:
                 d42_inventory[device_id]['custom_fields'].append(
                     {
-                        'notes': custom_field_record.get('custom_field_notes'),
                         'key': custom_field_record.get('custom_field_key'),
                         'value': custom_field_record.get('custom_field_value')
                     }
@@ -487,10 +490,9 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 view_device_v1.device_pk,
                 view_device_v1.name,
                 custom_field.key as custom_field_key,
-                custom_field.value as custom_field_value,
-                custom_field.notes as custom_field_notes
+                custom_field.value as custom_field_value
                 from view_device_v1
-                inner join (select device_fk, type, notes, key,
+                inner join (select device_fk, type, key,
                                   (CASE
                                     WHEN view_device_custom_fields_v1.type = 'Related Field'
                                         THEN (CASE
