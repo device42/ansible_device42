@@ -59,7 +59,6 @@ collections:
 - name: device42.d42
 version: 1.1.2
 source: https://galaxy.ansible.com/
-```
 
 * Install the Ansible collection by running command
 ```bash
