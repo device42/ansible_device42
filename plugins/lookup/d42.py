@@ -47,9 +47,12 @@ class LookupModule(LookupBase):
 
     def run(self, terms, variables=None, **kwargs):
         conf = {
-            'D42_URL': os.environ['D42_URL'],
-            'D42_USER': os.environ['D42_USER'],
-            'D42_PWD': os.environ['D42_PWD']
+            'D42_URL': os.environ.get('D42_URL'),
+            'D42_USER': os.environ.get('D42_USER'),
+            'D42_PWD': os.environ.get('D42_PWD'),
+            'D42_SSL_CHECK': os.environ.get('D42_SSL_CHECK', True),
+            'D42_DEBUG': os.environ.get('D42_DEBUG', False),
+            'D42_CLEAN_DEVICE_NAME': os.environ.get('D42_CLEAN_DEVICE_NAME', True)
         }
 
         if terms[1] == "password":

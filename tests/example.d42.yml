@@ -3,6 +3,9 @@ plugin: device42.d42.d42
 url: 'https://d42-4165.device42.net'
 username: admin
 password: password
+ssl_check: False
+debug: False
+clean_device_name: False
 keyed_groups:
     - key: d42_service_level
       prefix: ''
