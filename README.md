@@ -132,7 +132,7 @@ D42_PWD = 'device42 password'
 D42_URL = 'https:// device42 server IP address'
 D42_SKIP_SSL_CHECK = False
 D42_DEBUG = False
-D42_CLEAN
+D42_CLEAN_DEVICE_NAME = False
 ```
 
 ### How to run
