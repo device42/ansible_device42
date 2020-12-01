@@ -74,6 +74,7 @@ D42_USER = 'device42 user'
 D42_PWD = 'device42 password'
 D42_URL = 'https:// device42 server IP address'
 D42_SKIP_SSL_CHECK = False
+D42_CLEAN_DEVICE_NAME = False
 ```
 
 For more information on installing collections please follow documentation here https://docs.ansible.com/ansible/latest/user_guide/collections_using.html
@@ -94,6 +95,7 @@ username: admin
 password: password
 ssl_check: False
 debug: False
+clean_device_name: False
 keyed_groups:
     - key: d42_service_level
       prefix: ''
@@ -130,6 +132,7 @@ D42_PWD = 'device42 password'
 D42_URL = 'https:// device42 server IP address'
 D42_SKIP_SSL_CHECK = False
 D42_DEBUG = False
+D42_CLEAN
 ```
 
 ### How to run
