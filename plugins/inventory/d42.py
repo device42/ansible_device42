@@ -55,7 +55,7 @@ DOCUMENTATION = r'''
         clean_device_name:
             description: group name cleaning option.
             type: boolean
-            default: false
+            default: true
             env:
                 - name: D42_CLEAN_DEVICE_NAME
 '''
@@ -67,7 +67,7 @@ username: admin
 password: password
 ssl_check: False
 debug: False
-clean_device_name: False
+clean_device_name: True
 keyed_groups:
     - key: d42_service_level
       prefix: ''
@@ -99,9 +99,9 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         try:
             try:
                 clean_device_name = self.get_option('clean_device_name')
-            except Exception as e:
+            except Exception:
                 print("clean_device_name has not been defined in *.d42.yml. defaulting to False")
-                clean_device_name = False
+                clean_device_name = True
 
             objects = []
 

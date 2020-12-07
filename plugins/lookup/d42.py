@@ -52,7 +52,7 @@ class LookupModule(LookupBase):
             'D42_PWD': os.environ.get('D42_PWD'),
             'D42_SSL_CHECK': os.environ.get('D42_SSL_CHECK', True),
             'D42_DEBUG': os.environ.get('D42_DEBUG', False),
-            'D42_CLEAN_DEVICE_NAME': os.environ.get('D42_CLEAN_DEVICE_NAME', False)
+            'D42_CLEAN_DEVICE_NAME': os.environ.get('D42_CLEAN_DEVICE_NAME', True)
         }
 
         if terms[1] == "password":
