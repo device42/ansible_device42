@@ -100,7 +100,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             try:
                 clean_device_name = self.get_option('clean_device_name')
             except Exception:
-                print("clean_device_name has not been defined in *.d42.yml. defaulting to False")
+                print("clean_device_name has not been defined in *.d42.yml. defaulting to True")
                 clean_device_name = True
 
             objects = []

@@ -5,7 +5,7 @@ username: admin
 password: password
 ssl_check: False
 debug: False
-clean_device_name: False
+clean_device_name: True
 keyed_groups:
     - key: d42_service_level
       prefix: ''
