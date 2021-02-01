@@ -387,7 +387,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             customer.name as customer,
             t_cost.cost,
             view_vendor_v1.name as manufacturer,
-            view_device_v1.type as hw_model,
+            view_hardware_v1.name as hw_model,
             view_hardware_v1.hardware_pk as hw_model_id,
             vendor.name as manufacturer,
             view_hardware_v1.is_it_switch,
