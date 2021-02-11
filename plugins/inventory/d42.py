@@ -52,6 +52,12 @@ DOCUMENTATION = r'''
             default: false
             env:
                 - name: D42_DEBUG
+        clean_device_name:
+            description: group name cleaning option.
+            type: boolean
+            default: true
+            env:
+                - name: D42_CLEAN_DEVICE_NAME
 '''
 
 EXAMPLES = r'''
@@ -61,6 +67,7 @@ username: admin
 password: password
 ssl_check: False
 debug: False
+clean_device_name: True
 keyed_groups:
     - key: d42_service_level
       prefix: ''
@@ -90,6 +97,12 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         strict = self.get_option('strict')
 
         try:
+            try:
+                clean_device_name = self.get_option('clean_device_name')
+            except Exception:
+                print("clean_device_name has not been defined in *.d42.yml. defaulting to True")
+                clean_device_name = True
+
             objects = []
 
             json_response = self.get_d42_inventory()
@@ -98,7 +111,11 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 objects = json_response['Devices']
 
             for object_ in objects:
-                host_name = self.inventory.add_host(to_safe_group_name(object_['name']))
+                if clean_device_name:
+                    host_name = self.inventory.add_host(to_safe_group_name(object_['name']))
+                else:
+                    host_name = self.inventory.add_host(object_['name'])
+
                 for k in object_.keys():
                     self.inventory.set_variable(host_name, 'd42_' + k, object_[k])
 
