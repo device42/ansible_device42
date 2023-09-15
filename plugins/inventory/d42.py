@@ -165,6 +165,12 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
         return unformatted_d42_inventory
 
+    def bool_to_yes_no(self, val):
+        if isinstance(val, bool) and val:
+            return 'yes'
+
+        return 'no'
+
     def get_d42_inventory(self):
 
         debug = self.get_option('debug')
@@ -213,8 +219,8 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             device_record['nonauthoritativealiases'] = str(device.get('nonauthoritativealiases')).split(',') if device.get('nonauthoritativealiases') is not None else []
 
             device_record['service_level'] = device.get('service_level')
-            device_record['is_it_blade_host'] = 'no' if device.get('blade_chassis') == 'false' else 'yes'
-            device_record['is_it_switch'] = 'no' if device.get('is_it_switch') == 'false' else 'yes'
+            device_record['is_it_blade_host'] = self.bool_to_yes_no(device.get('blade_chassis'))
+            device_record['is_it_switch'] = self.bool_to_yes_no(device.get('network_device'))
             device_record['virtual_subtype_id'] = device.get('virtual_subtype_id')
             device_record['hw_size'] = device.get('hw_size')
             device_record['id'] = device.get('device_pk')
@@ -252,7 +258,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             device_record['corethread'] = device.get('corethread')
             device_record['cpucount'] = device.get('cpucount')
             device_record["virtual_host_name"] = device.get('virtual_host_name')
-            device_record["is_it_virtual_host"] = 'no' if device.get('virtual_host') == 'false' else 'yes'
+            device_record["is_it_virtual_host"] = self.bool_to_yes_no(device.get('virtual_host'))
             device_record["manufacturer"] = device.get('manufacturer')
             device_record["customer"] = device.get('customer')
             device_record["customer_id"] = device.get('customer_id')
